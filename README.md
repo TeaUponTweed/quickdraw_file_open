@@ -4,7 +4,7 @@ Open files under your cursor, for example try typing `Super + Enter` on `sublink
 
 You can also insert names using the fuzzy find panel. Just type `Super + Shift + Enter` and start typing.
 
-sublink.py
+![Example usage](./example.gif)
 
 # Limitations
 
