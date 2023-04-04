@@ -10,12 +10,12 @@ class OpenFileUnderCursorCommand(sublime_plugin.TextCommand):
 
         # Expand the selection to cover the whole word or file path
         self.expanded_region = self.view.expand_by_class(
-            selection, sublime.CLASS_WORD_START | sublime.CLASS_WORD_END, " ()[]\"'"
+            selection, sublime.CLASS_WORD_START | sublime.CLASS_WORD_END, " ()[]\"'\t`"
         )
         file_name = self.view.substr(self.expanded_region)
 
         # Remove any leading/trailing whitespaces, brackets, or quotes
-        file_name = file_name.strip(" '\"[]()<>\n")
+        file_name = file_name.strip(" '\"[]()<>\n`").rstrip(',.')
 
         # List all files in the project folders
         window = self.view.window()
@@ -73,11 +73,7 @@ class FuzzyFileSplatCommand(sublime_plugin.TextCommand):
         # Show quick panel with fuzzy search (built-in)
         # Implementation https://www.forrestthewoods.com/blog/reverse_engineering_sublime_texts_fuzzy_match/
         if len(self.rel_paths) > 1:
-            if len(first):
-                selected_index = first[0]
-            else:
-                selected_index = -1
-
+            selected_index = -1
             window.show_quick_panel(
                 items=self.rel_paths,
                 on_select=self.on_select,
@@ -95,9 +91,7 @@ class FuzzyFileSplatCommand(sublime_plugin.TextCommand):
             self.view.run_command("insert_text", {"text": rel_path})
 
     def on_highlighted(self, index):
-        if index >= 0:
-            selected_file_path = self.rel_paths[index]
-            self.view.window().open_file(selected_file_path, flags=4)
+        pass
 
 
 class InsertTextCommand(sublime_plugin.TextCommand):
